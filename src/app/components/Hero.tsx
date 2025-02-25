@@ -20,7 +20,7 @@ function HeroContent() {
       if (!searchQuery) return;
 
       setLoading(true);
-      const minLoadingTime = 2000; // Ensure at least 2s loading
+      const minLoadingTime = 2000;
       const startTime = Date.now();
 
       try {
