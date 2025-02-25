@@ -7,6 +7,7 @@ export interface Product {
     name: string;
     price: number;
     images: string[]; // Ensure images are always an array
+    category:string
 }
 
 // Fetch products by category
@@ -37,6 +38,52 @@ export async function fetchProductsByCategory(category: string): Promise<Product
         return [];
     }
 }
+
+// Fetch products by search query
+export async function fetchProductsBySearch(searchQuery: string): Promise<Product[]> {
+    try {
+        console.log("🔍 Searching for:", searchQuery);
+
+        const productsRef = collection(db, "products");
+        const snapshot = await getDocs(productsRef);
+
+        if (snapshot.empty) {
+            console.warn("⚠️ No products found in the database.");
+            return [];
+        }
+
+        // Convert query to lowercase for case-insensitive search
+        const q = searchQuery.toLowerCase();
+
+        // Filter locally (Firestore does not support "contains" queries directly)
+        const filteredProducts = snapshot.docs
+            .map((doc) => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    name: data.name || "Unknown Product",
+                    price: data.price || 0,
+                    images: data.images || ["/placeholder.png"],
+                    category: data.category || "Uncategorized",
+                } as Product;
+            })
+            .filter((product) =>
+                product.name.toLowerCase().includes(q) || 
+                product.category.toLowerCase().includes(q) 
+            );
+
+        if (filteredProducts.length === 0) {
+            console.warn(`⚠️ No matching results for "${searchQuery}".`);
+        }
+
+        return filteredProducts;
+    } catch (error) {
+        console.error("❌ Error fetching search results:", error);
+        return [];
+    }
+}
+
+
 
 
 // Add products

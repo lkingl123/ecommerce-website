@@ -1,14 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 
 export default function Navbar() {
   const pathname = usePathname(); // Get current active route
+  const router = useRouter(); // Router to update query params
+  const searchParams = useSearchParams(); // Get current search query
+
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +21,13 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Update URL when the user types in the search bar
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    router.push(`?q=${value}`, { scroll: false });
+  };
 
   return (
     <nav
@@ -63,6 +74,8 @@ export default function Navbar() {
             <IoSearch className="absolute left-3 text-gray-500 text-lg" />
             <input 
               type="text" 
+              value={searchQuery}
+              onChange={handleSearch}
               placeholder="Search for products..." 
               className="border border-gray-300 pl-10 pr-3 py-2 rounded-md text-sm focus:outline-none w-60"
             />
