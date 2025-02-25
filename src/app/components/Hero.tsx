@@ -103,7 +103,7 @@ export default function Hero() {
         </div>
 
         {/* ✅ Trending Products Section */}
-        <div className="container mx-auto mt-12 max-w-[1200px]">
+        <div className="container mx-auto mt-12 max-w-[1280px]">
           <h2 className="text-2xl font-bold text-center mb-6">
             Trending Products
           </h2>
