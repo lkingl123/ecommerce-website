@@ -15,18 +15,28 @@ export default function CategoryPage() {
 
   useEffect(() => {
     async function loadProducts() {
-      if (category) {
-        setLoading(true);
-        try {
-          const fetchedProducts = await fetchProductsByCategory(category);
-          setProducts(fetchedProducts);
-        } catch (error) {
-          console.error("Error fetching products:", error);
-        } finally {
+      if (!category) return;
+
+      setLoading(true);
+      const minLoadingTime = 2000; // ⏳ Ensure spinner lasts at least 2 seconds
+      const startTime = Date.now();
+
+      try {
+        const fetchedProducts = await fetchProductsByCategory(category);
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("❌ Error fetching products:", error);
+      } finally {
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = minLoadingTime - elapsedTime;
+
+        // ⏳ Ensure loading lasts for at least 2 seconds
+        setTimeout(() => {
           setLoading(false);
-        }
+        }, remainingTime > 0 ? remainingTime : 0);
       }
     }
+
     loadProducts();
   }, [category]);
 
@@ -41,7 +51,7 @@ export default function CategoryPage() {
       {/* Loading Indicator */}
       {loading ? (
         <div className="flex justify-center">
-          <Spinner /> {/* ✅ Render Spinner Component */}
+          <Spinner /> {/* ✅ Spinner runs for at least 2 seconds */}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
