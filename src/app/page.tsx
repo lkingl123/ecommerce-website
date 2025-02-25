@@ -7,7 +7,7 @@ export default function Home() {
       <Hero />
       <section className="container mx-auto py-8 max-w-[1200px]">
         <h2 className="text-2xl font-bold text-center mb-6">Trending Products</h2>
-        <ProductGrid category="accessories" />
+        <ProductGrid category="apparel" />
       </section>
     </div>
   );
