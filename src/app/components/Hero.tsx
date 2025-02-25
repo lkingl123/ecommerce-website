@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="flex justify-center py-24 bg-white">
+    <section className="flex justify-center pt-24 pb-8 bg-white">
       <div className="max-w-screen-xl w-full bg-gray-50 rounded-lg shadow-md flex flex-col md:flex-row items-center px-16 py-32">
        
         {/* Left Side: Text */}

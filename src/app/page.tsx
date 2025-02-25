@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       <Hero />
-      <section className="container mx-auto py-8">
+      <section className="container mx-auto py-8 max-w-[1200px]">
         <h2 className="text-2xl font-bold text-center mb-6">Trending Products</h2>
         <ProductGrid category="accessories" />
       </section>
