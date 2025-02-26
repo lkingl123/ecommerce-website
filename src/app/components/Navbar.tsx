@@ -41,7 +41,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-8">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold whitespace-nowrap">
-            Your Next Store
+           The New Deal
           </Link>
 
           {/* Navigation Links */}
