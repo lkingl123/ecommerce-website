@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="bg-gray-100 py-20">
+        <footer className="bg-gray-50 py-8 shadow-lg border-t-2 border-gray-100">
             <div className="container mx-auto px-6 flex flex-col md:flex-row justify-center items-start" style={{ gap: '42rem' }}>
                 
                 {/* Left Section: Newsletter */}
