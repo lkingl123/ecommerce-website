@@ -5,12 +5,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
-import { useSearch } from "@/context/SearchContext"; // ✅ Centralized Search State
+import { useSearch } from "@/context/SearchContext"; // ✅ Use global search context
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { searchQuery, setSearchQuery } = useSearch(); // ✅ Set search query
+  const pathname = usePathname(); // Get current active route
+  const router = useRouter(); // Router to update query params
+  const { searchQuery, setSearchQuery } = useSearch(); // ✅ Global state
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -22,20 +22,17 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Update query params and navigate to search page
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
-  
-    if (value.trim() === "") {
-      // ✅ Redirect to homepage when search is cleared
-      router.push("/", { scroll: true });
+
+    // Update URL only if search is performed
+    if (value) {
+      router.push(`/search?q=${value}`, { scroll: false });
     } else {
-      // ✅ Otherwise, update the search query in URL
-      router.push(`/search?q=${value}`, { scroll: true });
+      router.push("/", { scroll: false });
     }
   };
-  
 
   return (
     <nav
@@ -49,7 +46,6 @@ export default function Navbar() {
           <Link href="/" className="text-2xl font-bold whitespace-nowrap">
             The New Deal
           </Link>
-
           <div className="hidden md:flex space-x-6 text-gray-700 text-m">
             {[
               { name: "Home", href: "/" },
@@ -72,6 +68,7 @@ export default function Navbar() {
 
         {/* Right Side: Search, Cart & Login */}
         <div className="flex items-center space-x-5">
+          {/* Search Input */}
           <div className="relative flex items-center">
             <IoSearch className="absolute left-3 text-gray-500 text-lg" />
             <input
@@ -83,13 +80,13 @@ export default function Navbar() {
             />
           </div>
 
+          {/* Cart Icon */}
           <button className="relative text-2xl">
             <FaShoppingCart className="text-gray-700" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
-              1
-            </span>
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">1</span>
           </button>
 
+          {/* Login Icon */}
           <button className="text-2xl">
             <FaUser className="text-gray-700" />
           </button>

@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./styles/globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Spinner from "./components/Spinner"; // ✅ Import the Spinner
+import { SearchProvider } from "@/context/SearchContext"; // ✅ Import SearchProvider
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased vsc-initialized flex flex-col min-h-screen`}>
-        <Navbar />
-        {/* ✅ Wrap ALL children in Suspense */}
-        <Suspense fallback={<div className="flex justify-center py-10"><Spinner /></div>}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased vsc-initialized flex flex-col min-h-screen`}
+      >
+        <SearchProvider>
+          <Navbar />
           <main className="flex-grow">{children}</main>
-        </Suspense>
-        <Footer />
+          <Footer />
+        </SearchProvider>
       </body>
     </html>
   );
