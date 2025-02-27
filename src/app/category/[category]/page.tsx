@@ -51,7 +51,7 @@ export default function CategoryPage() {
 
       {/* Loading Indicator */}
       {loading ? (
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-32">
           <Spinner /> {/* ✅ Spinner runs for at least 2 seconds */}
         </div>
       ) : (
