@@ -7,10 +7,13 @@ import ProductCard from "@/app/components/ProductCard";
 import Spinner from "@/app/components/Spinner";
 import { fetchProductByName, fetchRelatedProducts } from "@/lib/firestore";
 import { Product } from "@/lib/firestore";
+import { useCart } from "@/context/CartContext"; // ✅ Import Cart Context
 
 export default function ProductPage() {
   const { productName } = useParams();
   const router = useRouter();
+  const { addToCart } = useCart(); // ✅ Get addToCart
+
   const productSlug = Array.isArray(productName) ? productName[0] : productName; // Ensure string
 
   const [product, setProduct] = useState<Product | null>(null);
@@ -97,14 +100,16 @@ export default function ProductPage() {
         {/* Product Details */}
         <div className="md:w-1/2 md:pl-12">
           <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-          <p className="text-l text-gray-500 mt-2">
-            {product.description}
-          </p>{" "}
-          {/* ✅ Show description */}
+          <p className="text-l text-gray-500 mt-2">{product.description}</p> {/* ✅ Show description */}
           <p className="text-2xl font-semibold text-gray-900 mt-4">
             ${product.price}
           </p>
-          <button className="mt-6 bg-black text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-gray-800 transition">
+          <button
+            className="mt-6 bg-black text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-gray-800 transition"
+            onClick={() => {
+              addToCart(product); // ✅ Add product to cart
+            }}
+          >
             Add to Cart
           </button>
         </div>
@@ -112,9 +117,7 @@ export default function ProductPage() {
 
       {/* ✅ Related Products Section */}
       <div className="mt-16">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          You May Also Like
-        </h2>
+        <h2 className="text-2xl font-bold text-center mb-6">You May Also Like</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {relatedProducts.map((relatedProduct) => (
             <div
@@ -122,9 +125,7 @@ export default function ProductPage() {
               className="cursor-pointer hover:shadow-lg transition"
               onClick={() =>
                 router.push(
-                  `/product/${relatedProduct.name
-                    .replace(/\s+/g, "-")
-                    .toLowerCase()}`
+                  `/product/${relatedProduct.name.replace(/\s+/g, "-").toLowerCase()}`
                 )
               }
             >
