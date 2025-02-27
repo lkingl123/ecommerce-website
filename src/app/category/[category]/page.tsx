@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { fetchProductsByCategory, Product } from "@/lib/firestore"; // ✅ Fetch from Firestore
 import ProductCard from "@/app/components/ProductCard";
 import Spinner from "@/app/components/Spinner"; // ✅ Import the spinner
+import Link from "next/link"; // ✅ Import Next.js Link
 
 export default function CategoryPage() {
   const params = useParams();
@@ -41,7 +42,7 @@ export default function CategoryPage() {
   }, [category]);
 
   return (
-    <div className="container mx-auto py-28 max-w-[1200px]"> {/* ✅ Center the content */}
+    <div className="container mx-auto py-28 max-w-[1200px]">
       {/* Title */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold capitalize">{category}</h1>
@@ -56,7 +57,11 @@ export default function CategoryPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.length > 0 ? (
-            products.map((product) => <ProductCard key={product.id} product={product} />)
+            products.map((product) => (
+              <Link key={product.id} href={`/product/${encodeURIComponent(product.name)}`}>
+                <ProductCard product={product} />
+              </Link>
+            ))
           ) : (
             <p className="text-gray-600 text-center col-span-3">Out of Stock</p>
           )}
