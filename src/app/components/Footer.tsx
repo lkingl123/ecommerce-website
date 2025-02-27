@@ -34,9 +34,9 @@ export default function Footer() {
                     <div>
                         <h3 className="font-semibold text-gray-700">Support</h3>
                         <ul className="space-y-1 text-gray-600">
-                            <li><Link href="#">Features</Link></li>
-                            <li><Link href="#">Pricing</Link></li>
-                            <li><Link href="#">Contact Us</Link></li>
+                            <li><Link href="/">Features</Link></li>
+                            <li><Link href="/">Pricing</Link></li>
+                            <li><Link href="/">Contact Us</Link></li>
                         </ul>
                     </div>
                 </div>
